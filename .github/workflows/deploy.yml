@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy_lambda:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - uses: actions/checkout@v1
+              with:
+                  python-version: "3.13"
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: ap-south-1
+            - name: Install Dependencies and Zip Lambda
+              run: |
+                  cd lambda
+                  pip install -r requirements.txt -t package/
+                  cp lambda_function.py package/
+                  cd package
+                  zip -r ../../function.zip .
+                  aws lambda update-function-code --function-name=test-lambda-from-terraform-creation --zip-file=fileb:/function.zip
