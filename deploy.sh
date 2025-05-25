@@ -8,7 +8,8 @@ echo "Installing dependencies..."
 pip install -r requirements.txt -t package/
 cp lambda_function.py package/
 cd package
-zip -r function.zip
+zip -r ../../function.zip .
+cd ../..
 
 echo "Applying Terraform..."
 cd terraform
