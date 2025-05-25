@@ -26,4 +26,5 @@ jobs:
                   cp lambda_function.py package/
                   cd package
                   zip -r ../../function.zip .
+                  cd ../..
                   aws lambda update-function-code --function-name=test-lambda-from-terraform-creation --zip-file=fileb://function.zip
